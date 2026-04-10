@@ -24,9 +24,17 @@ export const productService = {
   },
 
   async createProduct(product: Partial<Product>) {
+    const { title, description, price, discount_percent } = product;
+    const payload = {
+      title,
+      description,
+      price,
+      discount_percent: discount_percent ?? 0
+    };
+
     const { data, error } = await supabase
       .from('products')
-      .insert(product)
+      .insert(payload)
       .select()
       .single();
     

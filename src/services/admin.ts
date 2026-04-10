@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { Order, Product, ProductDimension, User } from './types';
+import { Order, Product, ProductDimension, User, FullProduct } from './types';
 
 export const adminService = {
   // Check if current user is admin
@@ -47,10 +47,23 @@ export const adminService = {
     return data as (Product & { product_dimensions: ProductDimension[] })[];
   },
 
-  async upsertProduct(product: Partial<Product>) {
+  async upsertProduct(product: Partial<FullProduct>) {
+    const payload: any = {};
+    const fields: (keyof Product)[] = ['title', 'description', 'price', 'discount_percent'];
+    
+    fields.forEach(field => {
+      if (product[field] !== undefined) {
+        payload[field] = product[field];
+      }
+    });
+
+    if (product.id && product.id.trim() !== '') {
+      payload.id = product.id;
+    }
+
     const { data, error } = await supabase
       .from('products')
-      .upsert(product)
+      .upsert(payload)
       .select()
       .single();
     
@@ -59,9 +72,22 @@ export const adminService = {
   },
 
   async upsertDimension(dimension: Partial<ProductDimension>) {
+    const payload: any = {};
+    const fields: (keyof ProductDimension)[] = ['product_id', 'label', 'length', 'width', 'height'];
+    
+    fields.forEach(field => {
+      if (dimension[field] !== undefined) {
+        payload[field] = dimension[field];
+      }
+    });
+
+    if (dimension.id && dimension.id.trim() !== '') {
+      payload.id = dimension.id;
+    }
+
     const { data, error } = await supabase
       .from('product_dimensions')
-      .upsert(dimension)
+      .upsert(payload)
       .select()
       .single();
     

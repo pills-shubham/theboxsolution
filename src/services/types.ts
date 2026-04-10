@@ -15,6 +15,8 @@ export interface Product {
   created_at: string;
 }
 
+export type FullProduct = Product & { product_dimensions: ProductDimension[] };
+
 export interface ProductDimension {
   id: string;
   product_id: string;

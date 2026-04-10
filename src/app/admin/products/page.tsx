@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { adminService } from "@/services/admin"
-import { Product, ProductDimension } from "@/services/types"
+import { Product, ProductDimension, FullProduct } from "@/services/types"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { Plus, Edit2, Trash2, Loader2, Save, X } from "lucide-react"
 
-type FullProduct = Product & { product_dimensions: ProductDimension[] }
+
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<FullProduct[]>([])
