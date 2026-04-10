@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { adminService } from '@/services/admin'
 
 export default function AuthCallback() {
   const router = useRouter()
@@ -11,7 +12,13 @@ export default function AuthCallback() {
     const handleAuth = async () => {
       const { error } = await supabase.auth.getSession()
       if (!error) {
-        router.push('/')
+        // Check if admin to decide redirect
+        const isAdmin = await adminService.checkAdminStatus()
+        if (isAdmin) {
+          router.push('/admin')
+        } else {
+          router.push('/')
+        }
         router.refresh()
       } else {
         router.push('/login?error=auth_failed')

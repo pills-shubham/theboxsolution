@@ -14,17 +14,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname()
 
   useEffect(() => {
+    if (pathname === '/admin/login') {
+      setIsAdmin(true)
+      return
+    }
+
     const check = async () => {
       const status = await adminService.checkAdminStatus()
       if (status === false) {
-        // Not authorized
         router.push('/admin/login')
       } else {
         setIsAdmin(true)
       }
     }
     check()
-  }, [router])
+  }, [router, pathname])
 
   if (isAdmin === null) {
     return (
@@ -34,8 +38,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     )
   }
 
+  // Render children directly for login page to avoid sidebar
+  if (pathname === '/admin/login') {
+    return <>{children}</>
+  }
+
   const menuItems = [
-    { label: "Overview", href: "/admin/dashboard", icon: LayoutDashboard },
+    { label: "Overview", href: "/admin", icon: LayoutDashboard },
     { label: "All Orders", href: "/admin/orders", icon: ShoppingBag },
     { label: "Inventory", href: "/admin/products", icon: Box },
   ]

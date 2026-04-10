@@ -3,10 +3,46 @@
 import { Navbar } from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { ArrowRight, Package, ShieldCheck, Zap, Globe } from "lucide-react"
+import { ArrowRight, Package, ShieldCheck, Zap, Globe, Loader2 } from "lucide-react"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { adminService } from "@/services/admin"
+import { authService } from "@/services/auth"
 
 export default function Home() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const checkRedirect = async () => {
+      try {
+        const user = await authService.getCurrentUser()
+        if (user) {
+          const isAdmin = await adminService.checkAdminStatus()
+          if (isAdmin) {
+            router.push('/admin')
+          } else {
+            router.push('/products')
+          }
+        } else {
+          setLoading(false)
+        }
+      } catch (err) {
+        setLoading(false)
+      }
+    }
+    checkRedirect()
+  }, [router])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="size-10 text-primary animate-spin" />
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-background selection:bg-primary/10">
       <Navbar />
