@@ -94,7 +94,6 @@ export default function OrderDetailsPage({ params }: OrderDetailProps) {
                     <p className="font-bold">{order.address?.name}</p>
                     <p className="text-muted-foreground">{order.address?.address_line}</p>
                     <p className="text-muted-foreground">{order.address?.city}, {order.address?.state} - {order.address?.pincode}</p>
-                    <p className="font-medium pt-2">{order.address?.phone}</p>
                 </CardContent>
             </Card>
 
