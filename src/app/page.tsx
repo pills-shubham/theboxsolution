@@ -8,11 +8,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ModeToggle } from "@/components/mode-toggle"
 import { ChevronDown, Mail, MessageSquare, PlusCircle, UserPlus, Settings, LogOut, GitBranch } from "lucide-react"
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/10 selection:text-primary">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b bg-background/80 backdrop-blur-md">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="size-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold">B</span>
+            </div>
+            <span className="font-bold tracking-tight">The Box Solution</span>
+          </div>
+          <ModeToggle />
+        </div>
+      </header>
+
       <main className="container mx-auto px-4 py-24 space-y-24">
         {/* Hero Section */}
         <section className="text-center space-y-4 max-w-2xl mx-auto">
