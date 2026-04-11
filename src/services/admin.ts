@@ -73,7 +73,7 @@ export const adminService = {
 
   async upsertDimension(dimension: Partial<ProductDimension>) {
     const payload: any = {};
-    const fields: (keyof ProductDimension)[] = ['product_id', 'label', 'length', 'width', 'height'];
+    const fields: (keyof ProductDimension)[] = ['product_id', 'label', 'length', 'width', 'height', 'price'];
     
     fields.forEach(field => {
       if (dimension[field] !== undefined) {
@@ -98,6 +98,14 @@ export const adminService = {
   async deleteDimension(id: string) {
     const { error } = await supabase
       .from('product_dimensions')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+  },
+
+  async deleteProduct(id: string) {
+    const { error } = await supabase
+      .from('products')
       .delete()
       .eq('id', id);
     if (error) throw error;

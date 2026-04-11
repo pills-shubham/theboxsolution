@@ -24,6 +24,7 @@ export interface ProductDimension {
   length: number;
   width: number;
   height: number;
+  price: number;
 }
 
 export interface Address {

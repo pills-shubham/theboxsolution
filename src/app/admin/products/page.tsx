@@ -67,6 +67,16 @@ export default function AdminProductsPage() {
     }
   }
 
+  const handleDeleteProduct = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this product? All its dimensions will also be deleted.")) return
+    try {
+      await adminService.deleteProduct(id)
+      await fetchProducts()
+    } catch (err) {
+      alert("Error deleting product")
+    }
+  }
+
   if (loading) return <div className="flex-1 flex items-center justify-center bg-zinc-950"><Loader2 className="animate-spin" /></div>
 
   return (
@@ -132,17 +142,23 @@ export default function AdminProductsPage() {
                   <CardTitle className="text-zinc-100">{product.title}</CardTitle>
                   <CardDescription className="text-zinc-500 text-[10px] uppercase font-bold tracking-widest mt-1">BASE: ${product.price} | {product.discount_percent}% OFF</CardDescription>
                </div>
-               <Button variant="outline" size="icon" onClick={() => setEditingProduct(product)} className="bg-zinc-950 border-zinc-800 hover:bg-zinc-800">
-                  <Edit2 className="size-4" />
-               </Button>
+               <div className="flex gap-2">
+                 <Button variant="outline" size="icon" onClick={() => setEditingProduct(product)} className="bg-zinc-950 border-zinc-800 hover:bg-zinc-800">
+                    <Edit2 className="size-4" />
+                 </Button>
+                 <Button variant="outline" size="icon" onClick={() => handleDeleteProduct(product.id)} className="bg-zinc-950 border-zinc-800 hover:bg-red-900/40 hover:text-red-500 hover:border-red-900/50">
+                    <Trash2 className="size-4" />
+                 </Button>
+               </div>
             </CardHeader>
             <CardContent className="p-0">
                <Table>
                  <TableHeader className="bg-zinc-950/30">
                     <TableRow className="border-zinc-800">
-                      <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10">Label</TableHead>
-                      <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10">L x W x H (cm)</TableHead>
-                      <TableHead className="text-right h-10"></TableHead>
+                       <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10">Label</TableHead>
+                       <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10">L x W x H (cm)</TableHead>
+                       <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10">Price ($)</TableHead>
+                       <TableHead className="text-right h-10"></TableHead>
                     </TableRow>
                  </TableHeader>
                  <TableBody>
@@ -164,24 +180,33 @@ export default function AdminProductsPage() {
                               <Input className="w-12 h-7 bg-transparent border-transparent hover:border-zinc-800 text-[10px] p-1 text-center" defaultValue={dim.height} onBlur={e => handleUpdateDimension({...dim, height: Number(e.target.value)})} />
                            </div>
                         </TableCell>
-                        <TableCell className="text-right py-2">
-                           <Button variant="ghost" size="icon" className="size-6 text-zinc-600 hover:text-red-500" onClick={() => handleDeleteDimension(dim.id)}>
-                              <Trash2 className="size-3" />
-                           </Button>
-                        </TableCell>
+                         <TableCell className="py-2">
+                           <Input 
+                             type="number" 
+                             step="0.01" 
+                             className="w-20 h-7 bg-transparent border-transparent hover:border-zinc-800 text-xs py-0 px-1 focus:bg-zinc-950" 
+                             defaultValue={dim.price} 
+                             onBlur={e => handleUpdateDimension({...dim, price: Number(e.target.value)})}
+                           />
+                         </TableCell>
+                         <TableCell className="text-right py-2">
+                            <Button variant="ghost" size="icon" className="size-6 text-zinc-600 hover:text-red-500" onClick={() => handleDeleteDimension(dim.id)}>
+                               <Trash2 className="size-3" />
+                            </Button>
+                         </TableCell>
                       </TableRow>
                     ))}
-                    <TableRow className="bg-zinc-950/20">
-                       <TableCell colSpan={3} className="py-2">
-                          <Button 
-                            variant="ghost" 
-                            className="w-full h-8 text-zinc-500 hover:text-zinc-300 text-[10px] font-bold uppercase tracking-widest"
-                            onClick={() => handleUpdateDimension({ product_id: product.id, label: 'New Size', length: 0, width: 0, height: 0 })}
-                          >
-                             <Plus className="mr-2 size-3" /> Add Dimension
-                          </Button>
-                       </TableCell>
-                    </TableRow>
+                     <TableRow className="bg-zinc-950/20">
+                        <TableCell colSpan={4} className="py-2">
+                           <Button 
+                             variant="ghost" 
+                             className="w-full h-8 text-zinc-500 hover:text-zinc-300 text-[10px] font-bold uppercase tracking-widest"
+                             onClick={() => handleUpdateDimension({ product_id: product.id, label: 'New Size', length: 0, width: 0, height: 0, price: 0 })}
+                           >
+                              <Plus className="mr-2 size-3" /> Add Dimension
+                           </Button>
+                        </TableCell>
+                     </TableRow>
                  </TableBody>
                </Table>
             </CardContent>

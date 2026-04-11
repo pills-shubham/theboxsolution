@@ -78,7 +78,9 @@ export function ProductCard({ product }: ProductCardProps) {
     }
   }
 
-  const discountPrice = product.price * (1 - product.discount_percent / 100)
+  const selectedDimObj = product.product_dimensions.find(d => d.id === selectedDimension)
+  const currentPrice = selectedDimObj ? selectedDimObj.price : product.price
+  const discountPrice = currentPrice * (1 - product.discount_percent / 100)
 
   return (
     <motion.div
@@ -106,7 +108,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold">${discountPrice.toFixed(2)}</span>
             {product.discount_percent > 0 && (
-              <span className="text-sm text-muted-foreground line-through">${product.price.toFixed(2)}</span>
+              <span className="text-sm text-muted-foreground line-through">${currentPrice.toFixed(2)}</span>
             )}
           </div>
 
@@ -119,7 +121,7 @@ export function ProductCard({ product }: ProductCardProps) {
               <SelectContent>
                 {product.product_dimensions.map((dim) => (
                   <SelectItem key={dim.id} value={dim.id}>
-                    {dim.label}
+                    {dim.label} {dim.price > 0 && `($${dim.price})`}
                   </SelectItem>
                 ))}
               </SelectContent>
