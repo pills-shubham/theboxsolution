@@ -40,42 +40,42 @@ export default function AdminDashboardPage() {
   ]
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       <div>
-        <h1 className="text-3xl font-black uppercase tracking-tighter italic">Command Center</h1>
+        <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter italic">Command Center</h1>
         <p className="text-zinc-500 text-sm">Real-time metrics for The Box Solution operations.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         {cards.map((card) => (
           <Card key={card.label} className="bg-zinc-900 border-zinc-800 shadow-xl">
-             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">{card.label}</CardTitle>
-                <div className={`p-2 rounded-lg ${card.bg}`}>
-                   <card.icon className={`size-4 ${card.color}`} />
+             <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
+                <CardTitle className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-zinc-500">{card.label}</CardTitle>
+                <div className={`p-1.5 sm:p-2 rounded-lg ${card.bg}`}>
+                   <card.icon className={`size-3.5 sm:size-4 ${card.color}`} />
                 </div>
              </CardHeader>
-             <CardContent>
-                <div className="text-2xl font-black text-zinc-100">{card.value}</div>
+             <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+                <div className="text-lg sm:text-2xl font-black text-zinc-100 truncate">{card.value}</div>
              </CardContent>
           </Card>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-         <Card className="bg-zinc-900 border-zinc-800 p-8 flex flex-col items-center justify-center text-center space-y-4">
-            <div className="size-20 bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-700">
-               <Users className="size-10 text-zinc-500" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
+         <Card className="bg-zinc-900 border-zinc-800 p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="size-16 sm:size-20 bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-700">
+               <Users className="size-8 sm:size-10 text-zinc-500" />
             </div>
-            <h3 className="font-bold text-xl uppercase tracking-widest italic">User Base Expansion</h3>
-            <p className="text-zinc-500 text-sm max-w-sm">Detailed user analytics and growth metrics are currently being indexed. Stand by for live feed.</p>
+            <h3 className="font-bold text-base sm:text-xl uppercase tracking-widest italic">User Base Expansion</h3>
+            <p className="text-zinc-500 text-xs sm:text-sm max-w-sm">Detailed user analytics and growth metrics are currently being indexed. Stand by for live feed.</p>
          </Card>
-         <Card className="bg-zinc-900 border-zinc-800 p-8 flex flex-col items-center justify-center text-center space-y-4">
-            <div className="size-20 bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-700">
-               <TrendingUp className="size-10 text-zinc-500" />
+         <Card className="bg-zinc-900 border-zinc-800 p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="size-16 sm:size-20 bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-700">
+               <TrendingUp className="size-8 sm:size-10 text-zinc-500" />
             </div>
-            <h3 className="font-bold text-xl uppercase tracking-widest italic">Revenue Forecast</h3>
-            <p className="text-zinc-500 text-sm max-w-sm">Projected quarterly earnings based on historical trends will appear here after more data points.</p>
+            <h3 className="font-bold text-base sm:text-xl uppercase tracking-widest italic">Revenue Forecast</h3>
+            <p className="text-zinc-500 text-xs sm:text-sm max-w-sm">Projected quarterly earnings based on historical trends will appear here after more data points.</p>
          </Card>
       </div>
     </div>

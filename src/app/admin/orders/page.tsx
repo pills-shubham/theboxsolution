@@ -51,15 +51,16 @@ export default function AdminOrdersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3">
         <div>
-          <h1 className="text-3xl font-black uppercase tracking-tighter italic">Global Orders</h1>
+          <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter italic">Global Orders</h1>
           <p className="text-zinc-500 text-sm">Monitor and manage all customer transactions.</p>
         </div>
         <Badge variant="outline" className="h-8 border-zinc-800 text-zinc-500">{orders.length} TOTAL RECORDS</Badge>
       </div>
 
-      <Card className="bg-zinc-900 border-zinc-800">
+      {/* Desktop Table View */}
+      <Card className="bg-zinc-900 border-zinc-800 hidden md:block">
         <CardContent className="p-0">
           <Table>
             <TableHeader className="bg-zinc-950/50 uppercase text-[10px] tracking-widest font-bold">
@@ -114,6 +115,49 @@ export default function AdminOrdersPage() {
           </Table>
         </CardContent>
       </Card>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-3">
+        {orders.map((order) => (
+          <Card key={order.id} className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-4 space-y-3">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="font-mono text-zinc-400 text-xs">#{order.id.slice(0, 8)}</p>
+                  <p className="font-bold text-zinc-100 mt-0.5">{order.users?.full_name || 'Generic User'}</p>
+                  <p className="text-[10px] text-zinc-500 truncate max-w-[200px]">{order.users?.email}</p>
+                </div>
+                <Badge variant="outline" className={`capitalize text-[10px] ${getStatusColor(order.status)}`}>
+                  {order.status}
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between pt-2 border-t border-zinc-800">
+                <div className="flex items-center gap-4">
+                  <div>
+                    <p className="text-[9px] uppercase text-zinc-600 font-bold tracking-widest">Total</p>
+                    <p className="font-bold text-white">${order.total_amount.toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase text-zinc-600 font-bold tracking-widest">Date</p>
+                    <p className="text-xs text-zinc-400">{new Date(order.created_at).toLocaleDateString()}</p>
+                  </div>
+                </div>
+                <Select defaultValue={order.status} onValueChange={(val) => handleStatusUpdate(order.id, val)}>
+                  <SelectTrigger className="w-28 bg-zinc-950 border-zinc-800 text-[10px] h-8 font-bold uppercase tracking-wider">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-zinc-900 border-zinc-800">
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="confirmed">Confirmed</SelectItem>
+                    <SelectItem value="shipped">Shipped</SelectItem>
+                    <SelectItem value="delivered">Delivered</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   )
 }

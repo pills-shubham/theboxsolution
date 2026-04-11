@@ -48,7 +48,7 @@ export default function Home() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 overflow-hidden">
             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse [animation-delay:2s]" />
@@ -60,25 +60,25 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest rounded-full mb-6 inline-block">
+            <span className="px-3 sm:px-4 py-1.5 bg-primary/10 text-primary text-[10px] sm:text-xs font-bold uppercase tracking-widest rounded-full mb-4 sm:mb-6 inline-block">
               Premium Packaging Solutions
             </span>
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-4 sm:mb-6 leading-tight">
               The Ultimate <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-primary/50">Box Solution.</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 text-balance">
+            <p className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-10 text-balance px-2">
               Industrial-grade packaging for businesses of all sizes. Fast delivery, custom dimensions, and unbeatable durability.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
               <Link href="/products">
-                <Button size="lg" className="h-14 px-8 text-lg font-bold group">
+                <Button size="lg" className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-bold group w-full sm:w-auto">
                   Explore Products
                   <ArrowRight className="ml-2 size-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="/login">
-                <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-bold">
+                <Button size="lg" variant="outline" className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-bold w-full sm:w-auto">
                   Get Started
                 </Button>
               </Link>
@@ -117,36 +117,36 @@ export default function Home() {
       </section>
 
       {/* Stats / Proof */}
-      <section className="py-20 border-y">
+      <section className="py-12 sm:py-20 border-y">
          <div className="container mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
+            <div className="flex flex-wrap justify-center gap-8 sm:gap-12 md:gap-24 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
                <div className="text-center">
-                  <p className="text-4xl font-black">10M+</p>
-                  <p className="text-sm font-bold uppercase tracking-widest">Boxes Shipped</p>
+                  <p className="text-2xl sm:text-4xl font-black">10M+</p>
+                  <p className="text-[10px] sm:text-sm font-bold uppercase tracking-widest">Boxes Shipped</p>
                </div>
                <div className="text-center">
-                  <p className="text-4xl font-black">25K</p>
-                  <p className="text-sm font-bold uppercase tracking-widest">Active Clients</p>
+                  <p className="text-2xl sm:text-4xl font-black">25K</p>
+                  <p className="text-[10px] sm:text-sm font-bold uppercase tracking-widest">Active Clients</p>
                </div>
                <div className="text-center">
-                  <p className="text-4xl font-black">99.9%</p>
-                  <p className="text-sm font-bold uppercase tracking-widest">Safe Arrival</p>
+                  <p className="text-2xl sm:text-4xl font-black">99.9%</p>
+                  <p className="text-[10px] sm:text-sm font-bold uppercase tracking-widest">Safe Arrival</p>
                </div>
             </div>
          </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-32">
+      <section className="py-16 sm:py-32">
          <div className="container mx-auto px-4">
-            <div className="bg-primary rounded-[3rem] p-12 md:p-20 text-primary-foreground text-center relative overflow-hidden shadow-2xl">
+            <div className="bg-primary rounded-2xl sm:rounded-[3rem] p-8 sm:p-12 md:p-20 text-primary-foreground text-center relative overflow-hidden shadow-2xl">
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent_50%)]" />
-               <h2 className="text-4xl md:text-6xl font-black mb-8 relative z-10">Ready to secure your shipments?</h2>
-               <p className="text-xl text-primary-foreground/80 max-w-xl mx-auto mb-10 relative z-10">
+               <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-6 sm:mb-8 relative z-10">Ready to secure your shipments?</h2>
+               <p className="text-sm sm:text-xl text-primary-foreground/80 max-w-xl mx-auto mb-8 sm:mb-10 relative z-10">
                   Join the thousands of businesses that trust The Box Solution for their logistics needs.
                </p>
                <Link href="/products" className="relative z-10">
-                  <Button size="lg" variant="secondary" className="h-16 px-12 text-xl font-bold rounded-full">
+                  <Button size="lg" variant="secondary" className="h-12 sm:h-16 px-8 sm:px-12 text-base sm:text-xl font-bold rounded-full">
                      Order Now
                   </Button>
                </Link>

@@ -33,46 +33,46 @@ export default function OrderDetailsPage({ params }: OrderDetailProps) {
     fetch()
   }, [id])
 
-  if (loading) return <div className="pt-24 container mx-auto px-4">Loading details...</div>
-  if (!order) return <div className="pt-24 container mx-auto px-4">Order not found.</div>
+  if (loading) return <div className="pt-20 sm:pt-24 container mx-auto px-4">Loading details...</div>
+  if (!order) return <div className="pt-20 sm:pt-24 container mx-auto px-4">Order not found.</div>
 
   return (
-    <div className="min-h-screen bg-background pt-24 pb-12">
+    <div className="min-h-screen bg-background pt-20 sm:pt-24 pb-12">
       <Navbar />
       <main className="container mx-auto px-4 max-w-4xl">
         <Link href="/orders">
-          <Button variant="ghost" className="mb-6 -ml-4">
-            <ChevronLeft className="mr-2 size-4" />
+          <Button variant="ghost" className="mb-4 sm:mb-6 -ml-2 sm:-ml-4 text-sm">
+            <ChevronLeft className="mr-1 sm:mr-2 size-4" />
             Back to Orders
           </Button>
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card>
-              <CardHeader className="border-b">
-                <div className="flex justify-between items-center">
+              <CardHeader className="border-b p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                    <div>
-                    <CardTitle className="text-xl">Order Details</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">ID: {order.id}</p>
+                    <CardTitle className="text-lg sm:text-xl">Order Details</CardTitle>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-1 break-all sm:break-normal">ID: {order.id}</p>
                    </div>
                    <Badge variant="outline" className={`capitalize ${getStatusColor(order.status)}`}>{order.status}</Badge>
                 </div>
               </CardHeader>
-              <CardContent className="pt-6">
-                 <div className="space-y-6">
+              <CardContent className="pt-4 sm:pt-6 p-4 sm:p-6">
+                 <div className="space-y-4 sm:space-y-6">
                    {order.order_items.map((item) => (
-                     <div key={item.id} className="flex gap-4">
-                        <div className="size-16 bg-muted rounded-lg flex items-center justify-center">
-                            <img src={`https://api.dicebear.com/7.x/shapes/svg?seed=${item.product_id}`} className="size-10" />
+                     <div key={item.id} className="flex gap-3 sm:gap-4">
+                        <div className="size-12 sm:size-16 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+                            <img src={`https://api.dicebear.com/7.x/shapes/svg?seed=${item.product_id}`} className="size-8 sm:size-10" />
                         </div>
-                        <div className="flex-1">
-                            <h4 className="font-bold">{item.product?.title}</h4>
+                        <div className="flex-1 min-w-0">
+                            <h4 className="font-bold text-sm sm:text-base truncate">{item.product?.title}</h4>
                             <p className="text-xs text-muted-foreground">{item.dimension?.label}</p>
-                            <p className="text-sm mt-1">Qty: {item.quantity}</p>
+                            <p className="text-xs sm:text-sm mt-1">Qty: {item.quantity}</p>
                         </div>
-                        <div className="text-right">
-                            <p className="font-bold">${(item.price_at_time * (1 - item.discount_at_time/100) * item.quantity).toFixed(2)}</p>
+                        <div className="text-right flex-shrink-0">
+                            <p className="font-bold text-sm sm:text-base">${(item.price_at_time * (1 - item.discount_at_time/100) * item.quantity).toFixed(2)}</p>
                             <p className="text-[10px] text-muted-foreground">${(item.price_at_time * (1 - item.discount_at_time/100)).toFixed(2)} / unit</p>
                         </div>
                      </div>
@@ -82,38 +82,38 @@ export default function OrderDetailsPage({ params }: OrderDetailProps) {
             </Card>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <Card>
-                <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
+                <CardHeader className="p-4 sm:p-6">
+                    <CardTitle className="text-sm sm:text-base flex items-center gap-2">
                         <MapPin className="size-4" />
                         Delivery Address
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm space-y-1">
+                <CardContent className="text-sm space-y-1 p-4 pt-0 sm:p-6 sm:pt-0">
                     <p className="font-bold">{order.address?.name}</p>
-                    <p className="text-muted-foreground">{order.address?.address_line}</p>
-                    <p className="text-muted-foreground">{order.address?.city}, {order.address?.state} - {order.address?.pincode}</p>
+                    <p className="text-muted-foreground text-xs sm:text-sm">{order.address?.address_line}</p>
+                    <p className="text-muted-foreground text-xs sm:text-sm">{order.address?.city}, {order.address?.state} - {order.address?.pincode}</p>
                 </CardContent>
             </Card>
 
             <Card>
-                <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
+                <CardHeader className="p-4 sm:p-6">
+                    <CardTitle className="text-sm sm:text-base flex items-center gap-2">
                         <Calendar className="size-4" />
                         Order Info
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm space-y-2">
+                <CardContent className="text-sm space-y-2 p-4 pt-0 sm:p-6 sm:pt-0">
                     <div className="flex justify-between">
                         <span className="text-muted-foreground">Date</span>
-                        <span>{new Date(order.created_at).toLocaleDateString()}</span>
+                        <span className="text-xs sm:text-sm">{new Date(order.created_at).toLocaleDateString()}</span>
                     </div>
                     <div className="flex justify-between">
                         <span className="text-muted-foreground">Payment</span>
-                        <span>COD (Mock)</span>
+                        <span className="text-xs sm:text-sm">COD (Mock)</span>
                     </div>
-                    <div className="pt-4 border-t flex justify-between font-bold text-lg">
+                    <div className="pt-4 border-t flex justify-between font-bold text-base sm:text-lg">
                         <span>Paid Total</span>
                         <span className="text-primary">${order.total_amount.toFixed(2)}</span>
                     </div>
