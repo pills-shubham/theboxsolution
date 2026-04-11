@@ -40,6 +40,19 @@ export default function AdminProductsPage() {
     if (!editingProduct) return
     try {
       const saved = await adminService.upsertProduct(editingProduct)
+      
+      // If there are dimensions to save (especially for new products)
+      if (editingProduct.product_dimensions && editingProduct.product_dimensions.length > 0) {
+        await Promise.all(
+          editingProduct.product_dimensions.map(dim => {
+            const isTempId = dim.id && dim.id.length < 30; // Real UUIDs are 36 chars
+            const dimToSave = { ...dim, product_id: saved.id };
+            if (isTempId) delete (dimToSave as any).id;
+            return adminService.upsertDimension(dimToSave);
+          })
+        )
+      }
+
       await fetchProducts()
       setEditingProduct(null)
       setIsAdding(false)
@@ -121,10 +134,92 @@ export default function AdminProductsPage() {
                       <Input type="number" step="0.01" className="bg-zinc-950 border-zinc-800" value={editingProduct?.price} onChange={e => setEditingProduct({...editingProduct!, price: Number(e.target.value)})} required />
                     </div>
                     <div className="space-y-2">
-                      <Label className="uppercase text-[10px] font-bold text-zinc-500 tracking-widest">Discount (%)</Label>
-                      <Input type="number" className="bg-zinc-950 border-zinc-800" value={editingProduct?.discount_percent} onChange={e => setEditingProduct({...editingProduct!, discount_percent: Number(e.target.value)})} />
-                    </div>
+                       <Label className="uppercase text-[10px] font-bold text-zinc-500 tracking-widest">Discount (%)</Label>
+                       <Input type="number" className="bg-zinc-950 border-zinc-800" value={editingProduct?.discount_percent} onChange={e => setEditingProduct({...editingProduct!, discount_percent: Number(e.target.value)})} />
+                     </div>
                   </div>
+
+                  {isAdding && (
+                    <div className="space-y-4 border-t border-zinc-800 pt-4">
+                      <div className="flex justify-between items-center">
+                        <Label className="uppercase text-[10px] font-bold text-red-500 tracking-widest">Initial Dimensions</Label>
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-6 text-[9px] uppercase font-bold"
+                          onClick={() => {
+                            const dims = [...(editingProduct?.product_dimensions || [])];
+                            dims.push({ id: Math.random().toString(), label: '', length: 0, width: 0, height: 0, price: 0, product_id: '' });
+                            setEditingProduct({...editingProduct!, product_dimensions: dims});
+                          }}
+                        >
+                          <Plus className="mr-1 size-3" /> Add Size
+                        </Button>
+                      </div>
+                      
+                      {editingProduct?.product_dimensions.map((dim, idx) => (
+                        <div key={dim.id} className="grid grid-cols-4 gap-2 items-end bg-zinc-950/50 p-2 rounded-lg border border-zinc-800">
+                          <div className="col-span-1 space-y-1">
+                            <Label className="text-[8px] uppercase text-zinc-600">Label</Label>
+                            <Input 
+                              className="h-7 text-[10px] bg-zinc-900" 
+                              placeholder="e.g. Small" 
+                              value={dim.label} 
+                              onChange={e => {
+                                const dims = [...editingProduct.product_dimensions];
+                                dims[idx].label = e.target.value;
+                                setEditingProduct({...editingProduct, product_dimensions: dims});
+                              }}
+                            />
+                          </div>
+                          <div className="col-span-2 space-y-1">
+                            <Label className="text-[8px] uppercase text-zinc-600">L x W x H (cm)</Label>
+                            <div className="flex items-center gap-1">
+                              <Input className="h-7 text-[9px] bg-zinc-900 p-1" value={dim.length} onChange={e => {
+                                const dims = [...editingProduct.product_dimensions];
+                                dims[idx].length = Number(e.target.value);
+                                setEditingProduct({...editingProduct, product_dimensions: dims});
+                              }} />
+                              <Input className="h-7 text-[9px] bg-zinc-900 p-1" value={dim.width} onChange={e => {
+                                const dims = [...editingProduct.product_dimensions];
+                                dims[idx].width = Number(e.target.value);
+                                setEditingProduct({...editingProduct, product_dimensions: dims});
+                              }} />
+                              <Input className="h-7 text-[9px] bg-zinc-900 p-1" value={dim.height} onChange={e => {
+                                const dims = [...editingProduct.product_dimensions];
+                                dims[idx].height = Number(e.target.value);
+                                setEditingProduct({...editingProduct, product_dimensions: dims});
+                              }} />
+                            </div>
+                          </div>
+                          <div className="col-span-1 space-y-1">
+                            <Label className="text-[8px] uppercase text-zinc-600">Price ($)</Label>
+                            <div className="flex items-center gap-1">
+                              <Input className="h-7 text-[9px] bg-zinc-900 p-1" value={dim.price} onChange={e => {
+                                const dims = [...editingProduct.product_dimensions];
+                                dims[idx].price = Number(e.target.value);
+                                setEditingProduct({...editingProduct, product_dimensions: dims});
+                              }} />
+                              <Button 
+                                type="button" 
+                                variant="ghost" 
+                                size="icon" 
+                                className="size-6 text-zinc-600 hover:text-red-500"
+                                onClick={() => {
+                                  const dims = editingProduct.product_dimensions.filter((_, i) => i !== idx);
+                                  setEditingProduct({...editingProduct, product_dimensions: dims});
+                                }}
+                              >
+                                <Trash2 className="size-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   <Button type="submit" className="w-full h-12 bg-red-600 hover:bg-red-500 font-bold uppercase tracking-widest text-xs">
                     <Save className="mr-2 size-4" /> {isAdding ? 'Deploy Product' : 'Commit Changes'}
                   </Button>
